@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.morphy.musicserver.dao.SingerMapper">
+    <sql id="base_column_list">
+        id, name, gender, birth, location, introduction, pic
+    </sql>
+    <!--增加歌手-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Singer">
+        insert into singer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id, </if>
+            <if test="name != null">name, </if>
+            <if test="gender != null">gender, </if>
+            <if test="birth != null">birth, </if>
+            <if test="location != null">location, </if>
+            <if test="introduction != null">introduction, </if>
+            <if test="pic != null">pic, </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id} </if>
+            <if test="name != null">#{name}, </if>
+            <if test="gender != null">#{gender}, </if>
+            <if test="birth != null">#{birth), </if>
+            <if test="location != null">#{location}, </if>
+            <if test="introduction != null">#{introduction}, </if>
+            <if test="pic != null">#{pic}, </if>
+            <if test="status != null">#{status}</if>
+        </trim>
+    </insert>
+    <!--更新歌手信息-->
+    <update id="update" parameterType="Singer">
+        update singer
+        <set>
+            <if test="name != null">name = #{name}</if>
+            <if test="gender != null">name = #{gender}</if>
+            <if test="birth != null">name = #{birth}</if>
+            <if test="location">name = #{location}</if>
+            <if test="introduction">name = #{introduction}</if>
+            <if test="pic != null">name = #{pic}</if>
+        </set>
+        where id = #{id} and status = #{status}
+    </update>
+    <!--根据id删除歌手-->
+    <update id="updateStatus">
+        update singer
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <!--根据id查找歌手-->
+    <select id="selectSingerById" resultType="Singer">
+        select
+        <include refid="base_column_list"/>
+        from singer
+        where id = #{id} and status = #{status}
+    </select>
+    <!--查找所有歌手-->
+    <select id="selectAllSingers" resultType="Singer">
+        select
+        <include refid="base_column_list"/>
+        from singer
+        where status = #{status}
+    </select>
+    <!--根据歌手名模糊查找歌手列表-->
+    <select id="selectSingersByName" resultType="Singer">
+        select
+        <include refid="base_column_list"/>
+        from singer
+        where name like #{name} and status = #{status}
+    </select>
+    <!--根据性别查找歌手列表-->
+    <select id="selectSingersByGender" resultType="Singer">
+        select
+        <include refid="base_column_list"/>
+        from singer
+        where gender = #{gender} and status = #{status}
+    </select>
+</mapper>
